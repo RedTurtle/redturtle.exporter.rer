@@ -11,9 +11,9 @@ except:
     import json
 
 from redturtle.exporter.base.browser.wrapper import Wrapper
+from redturtle.exporter.base.browser.jsonify import GetPortletsData
 from ploneorg.jsonify.jsonify import GetItem as BaseGetItemView
 from ploneorg.jsonify.jsonify import GetChildren as BaseGetChildrenView
-from .migration.topics import TopicMigrator
 from plone import api
 import DateTime
 from plone.app.discussion.interfaces import IConversation
