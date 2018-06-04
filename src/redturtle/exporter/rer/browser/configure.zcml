@@ -1,0 +1,84 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="redturtle.exporter.rer">
+
+  <!-- Set overrides folder for Just-a-Bunch-Of-Templates product -->
+  <include package="z3c.jbot" file="meta.zcml" />
+
+  <!-- Publish static files -->
+  <plone:static
+      name="redturtle.exporter.rer"
+      type="plone"
+      directory="static"
+      />
+
+  <configure zcml:condition="installed rer.schedeinformative">
+    <browser:page
+        for="rer.schedeinformative.interfaces.ISchedaER"
+        name="get_item"
+        class=".jsonify.GetItemSchedaER"
+        permission="zope2.ViewManagementScreens"
+        layer="rer.plone5.migration.interfaces.IRerPlone5MigrationLayer"
+        />
+    </configure>
+
+    <configure zcml:condition="installed rer.bandi">
+    <browser:page
+        for="rer.bandi.interfaces.IBando"
+        name="get_item"
+        class=".jsonify.GetItemBando"
+        permission="zope2.ViewManagementScreens"
+        layer="rer.plone5.migration.interfaces.IRerPlone5MigrationLayer"
+        />
+    </configure>
+
+    <configure zcml:condition="installed internos.base">
+    <browser:page
+        for="internos.base.interfaces.circolare.ICircolare"
+        name="get_item"
+        class=".jsonify.GetItemCircolare"
+        permission="zope2.ViewManagementScreens"
+        layer="rer.plone5.migration.interfaces.IRerPlone5MigrationLayer"
+        />
+    </configure>
+
+    <configure zcml:condition="installed rer.passaparola">
+    <browser:page
+        for="rer.passaparola.interfaces.passaparola.IPassaparola"
+        name="get_item"
+        class=".jsonify.GetItemBacheca"
+        permission="zope2.ViewManagementScreens"
+        layer="rer.plone5.migration.interfaces.IRerPlone5MigrationLayer"
+        />
+    </configure>
+    <configure zcml:condition="installed rer.passaparola">
+    <browser:page
+        for="rer.passaparola.interfaces.inserzione.IInserzione"
+        name="get_item"
+        class=".jsonify.GetItemAnnuncio"
+        permission="zope2.ViewManagementScreens"
+        layer="rer.plone5.migration.interfaces.IRerPlone5MigrationLayer"
+        />
+    </configure>
+    <configure zcml:condition="installed rer.bookcrossing">
+    <browser:page
+        for="rer.bookcrossing.interfaces.bookcrossing.IBookcrossing"
+        name="get_item"
+        class=".jsonify.GetItemBookCrossing"
+        permission="zope2.ViewManagementScreens"
+        layer="rer.plone5.migration.interfaces.IRerPlone5MigrationLayer"
+        />
+    </configure>
+    <configure zcml:condition="installed rer.bookcrossing">
+    <browser:page
+        for="rer.bookcrossing.interfaces.bookcrossing_insertion.IBookcrossingInsertion"
+        name="get_item"
+        class=".jsonify.GetItemBookCrossingInsertion"
+        permission="zope2.ViewManagementScreens"
+        layer="rer.plone5.migration.interfaces.IRerPlone5MigrationLayer"
+        />
+    </configure>
+
+</configure>
