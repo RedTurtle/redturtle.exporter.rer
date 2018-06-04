@@ -43,7 +43,7 @@ setup(
         'Products.GenericSetup',
         'setuptools',
         'z3c.jbot',
-        'redturtle.importer.base'
+        'redturtle.exporter.base'
     ],
     extras_require={
         'test': [
