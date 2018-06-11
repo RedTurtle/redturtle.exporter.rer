@@ -1,22 +1,23 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_base
+from plone import api
+from plone.app.discussion.interfaces import IConversation
+from ploneorg.jsonify.jsonify import GetChildren as BaseGetChildrenView
+from ploneorg.jsonify.jsonify import GetItem as BaseGetItemView
+from redturtle.exporter.base.browser.jsonify import check_hierarchy_private_status
+from redturtle.exporter.base.browser.jsonify import GetPortletsData
+from redturtle.exporter.base.browser.wrapper import Wrapper
+
 import base64
-import sys
+import DateTime
 import pprint
+import sys
 import traceback
 
 try:
     import simplejson as json
 except:
     import json
-
-from redturtle.exporter.base.browser.wrapper import Wrapper
-from redturtle.exporter.base.browser.jsonify import GetPortletsData
-from ploneorg.jsonify.jsonify import GetItem as BaseGetItemView
-from ploneorg.jsonify.jsonify import GetChildren as BaseGetChildrenView
-from plone import api
-import DateTime
-from plone.app.discussion.interfaces import IConversation
 
 
 def _clean_dict(dct, error):
@@ -90,6 +91,7 @@ class GetItemSchedaER(BaseGetItemView, GetPortletsData):
             context_dict.update({'portlets_data': self.get_portlets_data()})
             get_discussion_objects(self, context_dict)
             get_solr_extrafields(self, context_dict)
+            check_hierarchy_private_status(self, context_dict)
 
             if context_dict.get('_type') == 'SchedaER':
                 links_info = [
@@ -124,6 +126,7 @@ class GetItemBando(BaseGetItemView, GetPortletsData):
             context_dict.update({'portlets_data': self.get_portlets_data()})
             get_discussion_objects(self, context_dict)
             get_solr_extrafields(self, context_dict)
+            check_hierarchy_private_status(self, context_dict)
 
             closing_date = context_dict.get('chiusura_procedimento_bando', '')
             if closing_date:
@@ -149,6 +152,7 @@ class GetItemCircolare(BaseGetItemView, GetPortletsData):
             context_dict.update({'portlets_data': self.get_portlets_data()})
             get_discussion_objects(self, context_dict)
             get_solr_extrafields(self, context_dict)
+            check_hierarchy_private_status(self, context_dict)
 
             dataCircolare = context_dict.get('dataCircolare', '')
             if dataCircolare:
@@ -183,6 +187,7 @@ class GetItemBacheca(BaseGetItemView, GetPortletsData):
             context_dict.update({'portlets_data': self.get_portlets_data()})
             get_discussion_objects(self, context_dict)
             get_solr_extrafields(self, context_dict)
+            check_hierarchy_private_status(self, context_dict)
 
             context_dict['presentation_text'] = context_dict.get(
                 'passaparolaPresentation'
@@ -230,6 +235,7 @@ class GetItemAnnuncio(BaseGetItemView, GetPortletsData):
             context_dict.update({'portlets_data': self.get_portlets_data()})
             get_discussion_objects(self, context_dict)
             get_solr_extrafields(self, context_dict)
+            check_hierarchy_private_status(self, context_dict)
 
             context_dict['text'] = context_dict.get(
                 'description'
@@ -268,6 +274,7 @@ class GetItemBookCrossing(BaseGetItemView, GetPortletsData):
             context_dict.update({'portlets_data': self.get_portlets_data()})
             get_discussion_objects(self, context_dict)
             get_solr_extrafields(self, context_dict)
+            check_hierarchy_private_status(self, context_dict)
 
             context_dict['presentation_text'] = context_dict.get(
                 'bookcrossingPresentation'
@@ -315,6 +322,7 @@ class GetItemBookCrossingInsertion(BaseGetItemView, GetPortletsData):
             context_dict.update({'portlets_data': self.get_portlets_data()})
             get_discussion_objects(self, context_dict)
             get_solr_extrafields(self, context_dict)
+            check_hierarchy_private_status(self, context_dict)
 
             context_dict['text'] = context_dict.get(
                 'insertionDescription'
