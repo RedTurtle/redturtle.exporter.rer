@@ -331,3 +331,23 @@ class GetItemBookCrossingInsertion(BaseGetItem):
             return 'ERROR: exception wrapping object: %s\n%s' % (str(e), tb)
 
         return get_json_object(self, context_dict)
+
+
+class GetItemGeoLocation(BaseGetItem):
+
+    def __call__(self):
+        """
+        """
+        try:
+            context_dict = super(GetItemGeoLocation, self).__call__()
+            context_dict.update({'portlets_data': self.get_portlets_data()})
+
+            if getattr(self.context, 'geolocation'):
+               context_dict.update({'latitude': self.context.geolocation[0]})
+               context_dict.update({'longitude': self.context.geolocation[1]})
+
+        except Exception, e:
+            tb = pprint.pformat(traceback.format_tb(sys.exc_info()[2]))
+            return 'ERROR: exception wrapping object: %s\n%s' % (str(e), tb)
+
+        return get_json_object(self, context_dict)
