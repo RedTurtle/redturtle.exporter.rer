@@ -4,7 +4,7 @@ Changelog
 
 
 
-1.0a1 (unreleased)
+0.1.0 (2018-11-23)
 ------------------
 - Exported Geolocation object info.
   [daniele]
