@@ -74,5 +74,15 @@
         permission="zope2.ViewManagementScreens"
         />
     </configure>
+    <configure zcml:condition="installed collective.geo.bundle">
+    <browser:page
+        for="Products.Maps.interfaces.content.ILocation"
+        name="get_item"
+        class=".jsonify.GetItemGeoLocation"
+        permission="zope2.ViewManagementScreens"
+        />
+    </configure>
+
+GetItemGeoLocation
 
 </configure>

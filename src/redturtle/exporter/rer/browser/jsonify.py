@@ -1,23 +1,14 @@
 # -*- coding: utf-8 -*-
-from Acquisition import aq_base
-from plone import api
-from plone.app.discussion.interfaces import IConversation
-from ploneorg.jsonify.jsonify import GetChildren as BaseGetChildrenView
-from ploneorg.jsonify.jsonify import GetItem as BaseGetItemView
-from redturtle.exporter.base.browser.jsonify import check_hierarchy_private_status
-from redturtle.exporter.base.browser.jsonify import get_list_of_conteiner_type
-from redturtle.exporter.base.browser.jsonify import GetPortletsData
-from redturtle.exporter.base.browser.wrapper import Wrapper
+from redturtle.exporter.base.browser.jsonify import BaseGetItem
+from redturtle.exporter.base.browser.jsonify import check_hierarchy_private_status  # noqa
 
-import base64
-import DateTime
 import pprint
 import sys
 import traceback
 
 try:
     import simplejson as json
-except:
+except Exception:
     import json
 
 
@@ -49,51 +40,47 @@ def get_json_object(self, context_dict):
 
     self.request.response.setHeader('Content-Type', 'application/json')
     return JSON
+#
+#
+# def get_discussion_objects(self, context_dict):
+#     conversation = IConversation(self.context)
+#     comments = conversation.getComments()
+#     comments = [comment for comment in comments]
+#     tmp_lst = []
+#     for item in comments:
+#         tmp_dict = item.__dict__
+#         if not tmp_dict.get('status'):
+#             states = tmp_dict['workflow_history'].values()
+#             comment_status = states[0][-1]['review_state']
+#         try:
+#             del tmp_dict['__parent__']
+#             del tmp_dict['workflow_history']
+#         except Exception:
+#             pass
+#         tmp_dict['modification_date'] = DateTime.DateTime(
+#             tmp_dict['modification_date']).asdatetime().isoformat()
+#         tmp_dict['creation_date'] = DateTime.DateTime(
+#             tmp_dict['creation_date']).asdatetime().isoformat()
+#         if not tmp_dict.get('status'):
+#             tmp_dict.update({'status': comment_status})
+#         tmp_lst.append(tmp_dict)
+#     context_dict.update({'discussions': tmp_lst})
+#
+#
+# def get_solr_extrafields(self, context_dict):
+#     if not getattr(self.context, 'searchwords', None):
+#         return
+#     context_dict.update({'searchwords': self.context.searchwords.raw})
 
 
-def get_discussion_objects(self, context_dict):
-    conversation = IConversation(self.context)
-    comments = conversation.getComments()
-    comments = [comment for comment in comments]
-    tmp_lst = []
-    for item in comments:
-        tmp_dict = item.__dict__
-        if not tmp_dict.get('status'):
-            states = tmp_dict['workflow_history'].values()
-            comment_status = states[0][-1]['review_state']
-        try:
-            del tmp_dict['__parent__']
-            del tmp_dict['workflow_history']
-        except:
-            pass
-        tmp_dict['modification_date'] = DateTime.DateTime(
-            tmp_dict['modification_date']).asdatetime().isoformat()
-        tmp_dict['creation_date'] = DateTime.DateTime(
-            tmp_dict['creation_date']).asdatetime().isoformat()
-        if not tmp_dict.get('status'):
-            tmp_dict.update({'status': comment_status})
-        tmp_lst.append(tmp_dict)
-    context_dict.update({'discussions': tmp_lst})
-
-
-def get_solr_extrafields(self, context_dict):
-    if not getattr(self.context, 'searchwords', None):
-        return
-    context_dict.update({'searchwords': self.context.searchwords.raw})
-
-
-class GetItemSchedaER(BaseGetItemView, GetPortletsData):
+class GetItemSchedaER(BaseGetItem):
 
     def __call__(self):
         """
         """
         try:
-            context_dict = Wrapper(self.context)
+            context_dict = super(GetItemSchedaER, self).__call__()
             context_dict.update({'portlets_data': self.get_portlets_data()})
-            get_discussion_objects(self, context_dict)
-            get_solr_extrafields(self, context_dict)
-            check_hierarchy_private_status(self, context_dict)
-            get_list_of_conteiner_type(self, context_dict)
 
             if context_dict.get('_type') == 'SchedaER':
                 links_info = [
@@ -118,18 +105,14 @@ class GetItemSchedaER(BaseGetItemView, GetPortletsData):
         return get_json_object(self, context_dict)
 
 
-class GetItemBando(BaseGetItemView, GetPortletsData):
+class GetItemBando(BaseGetItem):
 
     def __call__(self):
         """
         """
         try:
-            context_dict = Wrapper(self.context)
+            context_dict = super(GetItemBando, self).__call__()
             context_dict.update({'portlets_data': self.get_portlets_data()})
-            get_discussion_objects(self, context_dict)
-            get_solr_extrafields(self, context_dict)
-            check_hierarchy_private_status(self, context_dict)
-            get_list_of_conteiner_type(self, context_dict)
 
             closing_date = context_dict.get('chiusura_procedimento_bando', '')
             if closing_date:
@@ -146,18 +129,14 @@ class GetItemBando(BaseGetItemView, GetPortletsData):
         return get_json_object(self, context_dict)
 
 
-class GetItemCircolare(BaseGetItemView, GetPortletsData):
+class GetItemCircolare(BaseGetItem):
 
     def __call__(self):
         """
         """
         try:
-            context_dict = Wrapper(self.context)
+            context_dict = super(GetItemCircolare, self).__call__()
             context_dict.update({'portlets_data': self.get_portlets_data()})
-            get_discussion_objects(self, context_dict)
-            get_solr_extrafields(self, context_dict)
-            check_hierarchy_private_status(self, context_dict)
-            get_list_of_conteiner_type(self, context_dict)
 
             dataCircolare = context_dict.get('dataCircolare', '')
             if dataCircolare:
@@ -182,18 +161,14 @@ class GetItemCircolare(BaseGetItemView, GetPortletsData):
         return get_json_object(self, context_dict)
 
 
-class GetItemBacheca(BaseGetItemView, GetPortletsData):
+class GetItemBacheca(BaseGetItem):
 
     def __call__(self):
         """
         """
         try:
-            context_dict = Wrapper(self.context)
+            context_dict = super(GetItemBacheca, self).__call__()
             context_dict.update({'portlets_data': self.get_portlets_data()})
-            get_discussion_objects(self, context_dict)
-            get_solr_extrafields(self, context_dict)
-            check_hierarchy_private_status(self, context_dict)
-            get_list_of_conteiner_type(self, context_dict)
 
             context_dict['presentation_text'] = context_dict.get(
                 'passaparolaPresentation'
@@ -231,18 +206,14 @@ class GetItemBacheca(BaseGetItemView, GetPortletsData):
         return get_json_object(self, context_dict)
 
 
-class GetItemAnnuncio(BaseGetItemView, GetPortletsData):
+class GetItemAnnuncio(BaseGetItem):
 
     def __call__(self):
         """
         """
         try:
-            context_dict = Wrapper(self.context)
+            context_dict = super(GetItemAnnuncio, self).__call__()
             context_dict.update({'portlets_data': self.get_portlets_data()})
-            get_discussion_objects(self, context_dict)
-            get_solr_extrafields(self, context_dict)
-            check_hierarchy_private_status(self, context_dict)
-            get_list_of_conteiner_type(self, context_dict)
 
             context_dict['text'] = context_dict.get(
                 'description'
@@ -271,18 +242,14 @@ class GetItemAnnuncio(BaseGetItemView, GetPortletsData):
         return get_json_object(self, context_dict)
 
 
-class GetItemBookCrossing(BaseGetItemView, GetPortletsData):
+class GetItemBookCrossing(BaseGetItem):
 
     def __call__(self):
         """
         """
         try:
-            context_dict = Wrapper(self.context)
+            context_dict = super(GetItemBookCrossing, self).__call__()
             context_dict.update({'portlets_data': self.get_portlets_data()})
-            get_discussion_objects(self, context_dict)
-            get_solr_extrafields(self, context_dict)
-            check_hierarchy_private_status(self, context_dict)
-            get_list_of_conteiner_type(self, context_dict)
 
             context_dict['presentation_text'] = context_dict.get(
                 'bookcrossingPresentation'
@@ -320,18 +287,14 @@ class GetItemBookCrossing(BaseGetItemView, GetPortletsData):
         return get_json_object(self, context_dict)
 
 
-class GetItemBookCrossingInsertion(BaseGetItemView, GetPortletsData):
+class GetItemBookCrossingInsertion(BaseGetItem):
 
     def __call__(self):
         """
         """
         try:
-            context_dict = Wrapper(self.context)
+            context_dict = super(GetItemBookCrossingInsertion, self).__call__()
             context_dict.update({'portlets_data': self.get_portlets_data()})
-            get_discussion_objects(self, context_dict)
-            get_solr_extrafields(self, context_dict)
-            check_hierarchy_private_status(self, context_dict)
-            get_list_of_conteiner_type(self, context_dict)
 
             context_dict['text'] = context_dict.get(
                 'insertionDescription'
@@ -363,6 +326,26 @@ class GetItemBookCrossingInsertion(BaseGetItemView, GetPortletsData):
 
             context_dict.update({'_layout': context_dict['_defaultpage']})
             context_dict.update({'_defaultpage': ''})
+        except Exception, e:
+            tb = pprint.pformat(traceback.format_tb(sys.exc_info()[2]))
+            return 'ERROR: exception wrapping object: %s\n%s' % (str(e), tb)
+
+        return get_json_object(self, context_dict)
+
+
+class GetItemGeoLocation(BaseGetItem):
+
+    def __call__(self):
+        """
+        """
+        try:
+            context_dict = super(GetItemGeoLocation, self).__call__()
+            context_dict.update({'portlets_data': self.get_portlets_data()})
+
+            if getattr(self.context, 'geolocation'):
+               context_dict.update({'latitude': self.context.geolocation[0]})
+               context_dict.update({'longitude': self.context.geolocation[1]})
+
         except Exception, e:
             tb = pprint.pformat(traceback.format_tb(sys.exc_info()[2]))
             return 'ERROR: exception wrapping object: %s\n%s' % (str(e), tb)
