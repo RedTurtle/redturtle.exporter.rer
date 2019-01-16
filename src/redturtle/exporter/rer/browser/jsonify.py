@@ -80,7 +80,6 @@ class GetItemSchedaER(BaseGetItem):
         """
         try:
             context_dict = super(GetItemSchedaER, self).__call__()
-            context_dict.update({'portlets_data': self.get_portlets_data()})
 
             if context_dict.get('_type') == 'SchedaER':
                 links_info = [
@@ -112,7 +111,6 @@ class GetItemBando(BaseGetItem):
         """
         try:
             context_dict = super(GetItemBando, self).__call__()
-            context_dict.update({'portlets_data': self.get_portlets_data()})
 
             closing_date = context_dict.get('chiusura_procedimento_bando', '')
             if closing_date:
@@ -136,7 +134,6 @@ class GetItemCircolare(BaseGetItem):
         """
         try:
             context_dict = super(GetItemCircolare, self).__call__()
-            context_dict.update({'portlets_data': self.get_portlets_data()})
 
             dataCircolare = context_dict.get('dataCircolare', '')
             if dataCircolare:
@@ -168,7 +165,6 @@ class GetItemBacheca(BaseGetItem):
         """
         try:
             context_dict = super(GetItemBacheca, self).__call__()
-            context_dict.update({'portlets_data': self.get_portlets_data()})
 
             context_dict['presentation_text'] = context_dict.get(
                 'passaparolaPresentation'
@@ -213,7 +209,6 @@ class GetItemAnnuncio(BaseGetItem):
         """
         try:
             context_dict = super(GetItemAnnuncio, self).__call__()
-            context_dict.update({'portlets_data': self.get_portlets_data()})
 
             context_dict['text'] = context_dict.get(
                 'description'
@@ -249,7 +244,6 @@ class GetItemBookCrossing(BaseGetItem):
         """
         try:
             context_dict = super(GetItemBookCrossing, self).__call__()
-            context_dict.update({'portlets_data': self.get_portlets_data()})
 
             context_dict['presentation_text'] = context_dict.get(
                 'bookcrossingPresentation'
@@ -294,7 +288,6 @@ class GetItemBookCrossingInsertion(BaseGetItem):
         """
         try:
             context_dict = super(GetItemBookCrossingInsertion, self).__call__()
-            context_dict.update({'portlets_data': self.get_portlets_data()})
 
             context_dict['text'] = context_dict.get(
                 'insertionDescription'
@@ -340,7 +333,6 @@ class GetItemGeoLocation(BaseGetItem):
         """
         try:
             context_dict = super(GetItemGeoLocation, self).__call__()
-            context_dict.update({'portlets_data': self.get_portlets_data()})
 
             if getattr(self.context, 'geolocation'):
                context_dict.update({'latitude': self.context.geolocation[0]})
