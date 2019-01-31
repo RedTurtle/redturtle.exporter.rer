@@ -74,7 +74,7 @@
         permission="zope2.ViewManagementScreens"
         />
     </configure>
-    <configure zcml:condition="installed collective.geo.bundle">
+    <configure zcml:condition="installed Products.Maps">
     <browser:page
         for="Products.Maps.interfaces.content.ILocation"
         name="get_item"
